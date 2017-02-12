@@ -105,7 +105,7 @@ router.get('/getData', function(req, res) {
     body: {
       token: userToken,
       chat: chat,
-      uids: ['1486890669297-7E79Ap-mh104']
+      uids: [messageUid]
     },
     json: true
   }
