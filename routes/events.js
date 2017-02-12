@@ -4,7 +4,7 @@ var rp = require('request-promise');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var passport = require('passport');
 
-var memo = "test";
+var memo = "this is a message for Andrew at 11:00";
 
 passport.use(new GoogleStrategy({
     clientID: '32013397026-5am1ufgrvlvkeh9kril5tgavdbc537mj.apps.googleusercontent.com',
@@ -57,7 +57,7 @@ router.get('/redirect', function(req, res) {
 })
 
 router.get('/getData', function(req, res) {
-  res.send({"test": memo})
+  res.send({"data": memo})
 })
 
 module.exports = router;
