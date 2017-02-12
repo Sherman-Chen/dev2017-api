@@ -88,7 +88,8 @@ router.get('/getData', function(req, res) {
   }
 
   request(params,function (error, response, body){
-      res.send(200, {"data": JSON.parse(body)[0].text})
+      console.log("))))))" + body[0].text);
+      res.send(200, {"data": memo})
       return
   }); 
 
