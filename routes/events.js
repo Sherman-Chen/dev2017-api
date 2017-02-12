@@ -53,7 +53,7 @@ router.get('/auth/google/callback',
 );
 
 router.get('/redirect', function(req, res) {
-  res.redirect('https://still-falls-28573.herokuapp.com/');
+  res.redirect('https://dev-ragingoctopus.herokuapp.com/');
 })
 
 router.get('/getData', function(req, res) {
