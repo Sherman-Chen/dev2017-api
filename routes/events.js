@@ -7,7 +7,7 @@ var passport = require('passport');
 passport.use(new GoogleStrategy({
     clientID: '32013397026-5am1ufgrvlvkeh9kril5tgavdbc537mj.apps.googleusercontent.com',
     clientSecret: '1LLed7oPae0Da47Pw1RinLBX',
-    callbackURL: "https://tranquil-wave-95184.herokuapp.com/"
+    callbackURL: "https://secret-wave-94862.herokuapp.com//events/auth/google/callback"
   },
   function(token, tokenSecret, profile, done) {
     console.log('===================')
@@ -49,5 +49,9 @@ router.get('/auth/google/callback',
     res.redirect('https://tranquil-wave-95184.herokuapp.com/');
   }
 );
+
+router.get('/test', function(req, res) {
+  res.direct('https://tranquil-wave-95184.herokuapp.com/');
+})
 
 module.exports = router;
