@@ -4,6 +4,8 @@ var rp = require('request-promise');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var passport = require('passport');
 
+var memo = "test";
+
 passport.use(new GoogleStrategy({
     clientID: '32013397026-5am1ufgrvlvkeh9kril5tgavdbc537mj.apps.googleusercontent.com',
     clientSecret: '1LLed7oPae0Da47Pw1RinLBX',
@@ -52,6 +54,10 @@ router.get('/auth/google/callback',
 
 router.get('/test', function(req, res) {
   res.redirect('https://tranquil-wave-95184.herokuapp.com/');
+})
+
+router.post('/test2', function(req, res) {
+  res.send({"test": memo})
 })
 
 module.exports = router;
