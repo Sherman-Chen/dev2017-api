@@ -98,7 +98,21 @@ router.get('/getData', function(req, res) {
 
   request.post(options, function (error, response, body){
       console.log("+++++++++++" + body);
-  });  
+  }); 
+
+  var params = {
+    uri: 'https://api.flock.co/v1/chat.fetchMessages',
+    body: {
+      token: userToken,
+      chat: chat,
+      uids: ['1486890669297-7E79Ap-mh104']
+    },
+    json: true
+  }
+
+  request(params,function (error, response, body){
+      console.log("+++++++++++" + body);
+  }); 
 
   res.send(200, {"data": memo})
   return
