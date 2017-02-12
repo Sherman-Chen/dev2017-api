@@ -46,7 +46,7 @@ router.get('/auth/google/callback',
     console.log('---------')
     console.log(res)
     // Successful authentication, redirect home.
-    res.redirect('/events/widget');
+    res.redirect('https://tranquil-wave-95184.herokuapp.com/');
   }
 );
 
