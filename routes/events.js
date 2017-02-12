@@ -66,7 +66,7 @@ router.get('/redirect', function(req, res) {
   var data = JSON.parse(req.query.flockEvent);
   chat = data.chat;
   messageUid = data.messageUids.messageUid;
-  
+  console.log("===============user" + userToken);
   console.log("===============chat" + chat);
   console.log("===============messageUid" + messageUid);
   res.redirect('https://dev-ragingoctopus.herokuapp.com/');
