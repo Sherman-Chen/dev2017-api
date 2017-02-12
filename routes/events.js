@@ -65,8 +65,10 @@ router.get('/redirect', function(req, res) {
   console.log("===============" + req.query.flockEvent);
   var data = JSON.parse(req.query.flockEvent);
   chat = data.chat;
+  messageUid = data.messageUids.messageUid;
+  
   console.log("===============chat" + chat);
-  //console.log("===============messageUid" + messageUid);
+  console.log("===============messageUid" + messageUid);
   res.redirect('https://dev-ragingoctopus.herokuapp.com/');
 })
 
