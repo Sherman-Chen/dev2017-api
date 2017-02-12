@@ -71,14 +71,15 @@ router.get('/redirect', function(req, res) {
   console.log("===============messageUid" + messageUid);
   res.redirect('https://dev-ragingoctopus.herokuapp.com/');
 })
-
+var array = [];
+array.push("" + messageUid);
 router.get('/getData', function(req, res) {
   request.post({
     url: "https://api.flock.co/v1/chat.fetchMessages", 
     form: {
       "token": userToken,
       "chat": chat,
-      "uids": ['"' + messageUid + '"']
+      "uids": array
     }
   }, function (e, r, body) {
     console.log("++++++++" + body);
