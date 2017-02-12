@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var events = require('./routes/events');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
-var gcal     = require('google-calendar');
+var gcal = require('google-calendar');
 
 var app = express();
 
@@ -36,34 +36,6 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/events', events);
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.use(new GoogleStrategy({
-    clientID: '32013397026-5am1ufgrvlvkeh9kril5tgavdbc537mj.apps.googleusercontent.com',
-    clientSecret: '1LLed7oPae0Da47Pw1RinLBX',
-    callbackURL: "http://localhost:8080/events/auth/google/callback",
-    scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar']
-  },
-  function(token, tokenSecret, profile, done) {
-    console.log(token)
-    return done(null, profile)
-  }
-));
-
-app.get('/events/auth/google', passport.authenticate('google', { scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar'] }))
-
-app.get('/events/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/events/widget');
-  }
-);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
