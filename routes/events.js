@@ -4,27 +4,40 @@ var router = express.Router();
 var rp = require('request-promise');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var passport = require('passport');
-var memo = "this is a message for Andrew at 11:00";
+var config = require('../config')
 
+var memo = "this is a message for Andrew at 11:00";
 var gcal = require('google-calendar');
-var google_calendar = new gcal.GoogleCalendar('ya29.GlvwA6SMEkFqyBMTvNmisEdLnfYYykdfTcr3BBGyg3KZ_jkP9zzrJWvbmr9X3HQzj9SqT8APsK9-LItJbMUjISOPjzygVQenAMEMz7hASxBP4O3Lx1SB3bLcSttR');
+var google_calendar = null
 var userToken = ''
 var chat = ''
 var messageUid = ''
+var accessToken = ''
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
 passport.use(new GoogleStrategy({
-    clientID: '32013397026-5am1ufgrvlvkeh9kril5tgavdbc537mj.apps.googleusercontent.com',
-    clientSecret: '1LLed7oPae0Da47Pw1RinLBX',
-    callbackURL: "https://secret-wave-94862.herokuapp.com//events/auth/google/callback"
+    clientID: config.clientID,
+    clientSecret: config.clientSecret,
+    callbackURL: config.callbackURL,
+    scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar']
   },
   function(token, tokenSecret, profile, done) {
+    console.log('==========')
     console.log(token)
+    google_calendar = new gcal.GoogleCalendar(token);
     return done(null, profile)
   }
 ));
 
 /* GET home page. */
 router.post('/', function(req, res) {
+  console.log(config.clientID)
   res.sendStatus(200)
   userToken = req.body.userToken
   console.log(userToken)
@@ -33,7 +46,6 @@ router.post('/', function(req, res) {
 
 router.post('/gcl', function(req, res) {
   const spec = req.body
-  console.log(spec)
   const summary = spec.summary
   const start = spec.start
   const end = spec.end
@@ -90,5 +102,15 @@ router.get('/getData', function(req, res) {
 
 
 })
+
+router.get('/auth/google', passport.authenticate('google', { scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar'] }))
+
+router.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
 
 module.exports = router;
