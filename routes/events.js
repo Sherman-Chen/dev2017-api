@@ -53,7 +53,7 @@ router.get('/auth/google/callback',
 );
 
 router.get('/redirect', function(req, res) {
-  console.log("===============" + req.params);
+  console.log("===============" + req.query.flockEvent);
   res.redirect('https://dev-ragingoctopus.herokuapp.com/');
 })
 
