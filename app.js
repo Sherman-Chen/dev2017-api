@@ -23,16 +23,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/', index);
-app.use('/users', users);
-app.use('/events', events);
-
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', "*");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   next();
 });
+
+
+app.use('/', index);
+app.use('/users', users);
+app.use('/events', events);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
