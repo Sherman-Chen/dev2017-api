@@ -52,11 +52,11 @@ router.get('/auth/google/callback',
   }
 );
 
-router.get('/test', function(req, res) {
+router.get('/redirect', function(req, res) {
   res.redirect('https://tranquil-wave-95184.herokuapp.com/');
 })
 
-router.post('/test2', function(req, res) {
+router.get('/getData', function(req, res) {
   res.send({"test": memo})
 })
 
