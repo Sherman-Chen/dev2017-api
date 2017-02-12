@@ -109,7 +109,7 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('https://dev-ragingoctopus.herokuapp.com/');
   }
 );
 
