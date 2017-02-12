@@ -64,9 +64,8 @@ router.post('/gcl', function(req, res) {
 router.get('/redirect', function(req, res) {
   console.log("===============" + req.query.flockEvent);
   chat = req.query.flockEvent.chat;
-  messageUid = req.query.flockEvent.messageUids.messageUid
   console.log("===============chat" + chat);
-  console.log("===============messageUid" + messageUid);
+  //console.log("===============messageUid" + messageUid);
   res.redirect('https://dev-ragingoctopus.herokuapp.com/');
 })
 
