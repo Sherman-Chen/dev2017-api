@@ -84,18 +84,21 @@ router.get('/getData', function(req, res) {
       json: true,   // <--Very important!!!
       body: json
   }, function (error, response, body){
-      console.log(response);
+      console.log(body);
   });
 
-  request.post("https://api.flock.co/v1/chat.fetchMessages", 
-  {
-    "token": userToken,
-    "chat": chat,
-    "uids": ["1486890669297-7E79Ap-mh104"]
-  }, 
-  function (e, r, body) {
-    console.log("++++++++" + body);
-  });
+  let options = {  
+    url: 'https://api.flock.co/v1/chat.fetchMessages',
+    form: {
+      "token": userToken,
+      "chat": chat,
+      "uids": ["1486890669297-7E79Ap-mh104"]
+    }
+  };
+
+  request.post(options, function (error, response, body){
+      console.log("+++++++++++" + body);
+  });  
 
   res.send(200, {"data": memo})
   return
