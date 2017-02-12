@@ -74,14 +74,13 @@ router.get('/redirect', function(req, res) {
 var array = [];
 array.push("'" + messageUid + "'");
 router.get('/getData', function(req, res) {
-  request.post({
-    url: "https://api.flock.co/v1/chat.fetchMessages", 
-    form: {
-      "token": userToken,
-      "chat": chat,
-      "uids": ["1486890669297-7E79Ap-mh104"]
-    }
-  }, function (e, r, body) {
+  request.post("https://api.flock.co/v1/chat.fetchMessages", 
+  {
+    "token": userToken,
+    "chat": chat,
+    "uids": ["1486890669297-7E79Ap-mh104"]
+  }, 
+  function (e, r, body) {
     console.log("++++++++" + body);
   });
 
