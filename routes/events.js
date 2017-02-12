@@ -92,7 +92,7 @@ router.get('/getData', function(req, res) {
     form: {
       "token": userToken,
       "chat": chat,
-      "uids": ["1486890669297-7E79Ap-mh104"]
+      "uids": ['1486890669297-7E79Ap-mh104']
     }
   };
 
