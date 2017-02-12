@@ -51,7 +51,7 @@ router.get('/auth/google/callback',
 );
 
 router.get('/test', function(req, res) {
-  res.direct('https://tranquil-wave-95184.herokuapp.com/');
+  res.redirect('https://tranquil-wave-95184.herokuapp.com/');
 })
 
 module.exports = router;
