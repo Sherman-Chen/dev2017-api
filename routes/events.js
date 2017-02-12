@@ -77,29 +77,6 @@ var json = {
               "uids": ["1486890669297-7E79Ap-mh104"]
             }
 router.get('/getData', function(req, res) {
-
-  request({
-      url: "https://api.flock.co/v1/chat.fetchMessages",
-      method: "POST",
-      json: true,   // <--Very important!!!
-      body: json
-  }, function (error, response, body){
-      console.log(body);
-  });
-
-  let options = {  
-    url: 'https://api.flock.co/v1/chat.fetchMessages',
-    form: {
-      "token": userToken,
-      "chat": chat,
-      "uids": ['1486890669297-7E79Ap-mh104']
-    }
-  };
-
-  request.post(options, function (error, response, body){
-      console.log("+++++++++++" + body);
-  }); 
-
   var params = {
     uri: 'https://api.flock.co/v1/chat.fetchMessages',
     body: {
@@ -111,11 +88,11 @@ router.get('/getData', function(req, res) {
   }
 
   request(params,function (error, response, body){
-      console.log("+++++++++++" + body);
+      res.send(200, {"data": JSON.parse(body)[0].text})
+      return
   }); 
 
-  res.send(200, {"data": memo})
-  return
+
 })
 
 module.exports = router;
