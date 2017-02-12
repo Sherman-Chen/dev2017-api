@@ -17,50 +17,72 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+var gcal = require('google-calendar');
+var google_calendar = new gcal.GoogleCalendar('ya29.GlvwA6SMEkFqyBMTvNmisEdLnfYYykdfTcr3BBGyg3KZ_jkP9zzrJWvbmr9X3HQzj9SqT8APsK9-LItJbMUjISOPjzygVQenAMEMz7hASxBP4O3Lx1SB3bLcSttR');
+var userToken = ''
+
+
 /* GET home page. */
 router.post('/', function(req, res) {
   res.sendStatus(200)
-  console.log(req.body.userToken)
+  userToken = req.body.userToken
+  console.log(userToken)
   return
 });
 
 router.get('/widget', function(req, res) {
-  // return rp.get('https://www.google.com')
-  //   .then(function(response) {
-  //     console.log('yes')
-  //     console.log(response)
-  //     res.render('index', { title: 'Flock' });
-  //     console.log(req.query.flockEventToken)
-  //     console.log(req.query.flockEvent)
-  //     return
-  //   })
   res.render('index', { title: 'Flock' });
   console.log(req.query.flockEventToken)
   console.log(req.query.flockEvent)
   return
 });
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
+router.post('/gcl', function(req, res) {
+  const spec = req.body
+  console.log(spec)
+  const summary = spec.summary
+  const start = spec.start
+  const end = spec.end
+  const tz = spec.timezone
+  google_calendar.calendarList.list(function(err, calendarList) {
+    console.log(calendarList)
+    var event = {
+      'summary': summary,
+      'start': {
+        // 'dateTime': '2017-02-14T09:00:00-07:00',
+        // 'timeZone': 'America/Los_Angeles'
+        'dateTime': start,
+        'timeZone': tz
+      },
+      'end': {
+        'dateTime': end,
+        'timeZone': tz
+      }
+    };
 
-router.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    console.log('---------')
-    console.log(res)
-    // Successful authentication, redirect home.
-    res.redirect('https://tranquil-wave-95184.herokuapp.com/');
-  }
-);
+    google_calendar.events.insert(calendarList.items[0].id, event, function(err, data) {
+      console.log(err)
+      if(err) return res.send(500,err);
+      console.log(data)
+      res.send(200, calendarList)
+    })
 
-router.get('/redirect', function(req, res) {
-  console.log("===============" + req.query.flockEvent);
-  res.redirect('https://dev-ragingoctopus.herokuapp.com/');
-})
+    // google_calendar.events.quickAdd('cyrilyu.tw@gmail.com', 'Testing Again', function(err, data) {
+    //   if(err) return res.send(500,err);
+    //   console.log(data)
+    // });
+    
+  })
 
-router.get('/getData', function(req, res) {
+  router.get('/redirect', function(req, res) {
+    console.log("===============" + req.query.flockEvent);
+    res.redirect('https://dev-ragingoctopus.herokuapp.com/');
+  })
 
-  res.send(200, {"data": memo})
-  return
-})
+  router.get('/getData', function(req, res) {
+
+    res.send(200, {"data": memo})
+    return
+  })
 
 module.exports = router;
