@@ -96,7 +96,12 @@ router.get('/getData', function(req, res) {
   }
 
   request(params,function (error, response, body){
-      res.send(200, {"data": body[0].text})
+      if (body[0].text === undefined) {
+        res.send(200, {"data": ''})
+      } else {
+        res.send(200, {"data": body[0].text})
+      }
+      
       return
   }); 
 
