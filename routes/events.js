@@ -4,15 +4,17 @@ var router = express.Router();
 var rp = require('request-promise');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var passport = require('passport');
-var config = require('../config')
+var config = require('../config');
+var Promise = require('bluebird');
+var _ = require('lodash');
 
 var memo = "this is a message for Andrew at 11:00";
 var gcal = require('google-calendar');
 var google_calendar = null
-var userToken = ''
-var chat = ''
-var messageUid = ''
-var accessToken = ''
+var userToken = '';
+var chat = '';
+var messageUid = '';
+var accessToken = '';
 
 router.use(passport.initialize());
 router.use(passport.session());
@@ -37,10 +39,12 @@ passport.use(new GoogleStrategy({
 
 /* GET home page. */
 router.post('/', function(req, res) {
-  console.log(config.clientID)
-  res.sendStatus(200)
-  userToken = req.body.userToken
-  console.log(userToken)
+  // mongoose db to store user info
+  console.log(req.body);
+  console.log(config.clientID);
+  res.sendStatus(200);
+  userToken = req.body.userToken;
+  console.log(userToken);
   return
 });
 
@@ -64,12 +68,45 @@ router.post('/gcl', function(req, res) {
       }
     };
 
-    google_calendar.events.insert(calendarList.items[0].id, event, function(err, data) {
-      console.log(err)
-      if(err) return res.send(500,err);
-      console.log(data)
+    const lists = _.filter(calendarList.items, function (obj) {
+      return obj.accessRole === 'owner'
+    });
+
+    console.log('lists are : ' + lists)
+
+    // google_calendar.events.insert(list[0].id, event, function(err, data) {
+    //   console.log(err)
+    //   if(err) return res.send(500,err);
+    //   console.log(data)
+    //   res.send(200, calendarList)
+    // })
+
+   Promise.map(lists, function(list) {
+     console.log(list)
+     google_calendar.events.insert(list.id, event, function(err, data) {
+       console.log(err)
+       if(err) return res.send(500,err);
+       console.log(data)
+     })
+   }).then(function() {
       res.send(200, calendarList)
-    })
+   })
+
+    // _.each(lists, function(list) {
+    //   google_calendar.events.insert(list.id, event, function(err, data) {
+    //     console.log(err)
+    //     if(err) return res.send(500,err);
+    //     console.log(data)
+    //     res.send(200, calendarList)
+    //   })
+    // })
+
+    // google_calendar.events.insert(calendarList.items[0].id, event, function(err, data) {
+    //   console.log(err)
+    //   if(err) return res.send(500,err);
+    //   console.log(data)
+    //   res.send(200, calendarList)
+    // })
   })
 })
 
