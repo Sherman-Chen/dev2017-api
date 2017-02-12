@@ -1,4 +1,5 @@
 var express = require('express');
+var request = require('request');
 var router = express.Router();
 var rp = require('request-promise');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -8,6 +9,8 @@ var memo = "this is a message for Andrew at 11:00";
 var gcal = require('google-calendar');
 var google_calendar = new gcal.GoogleCalendar('ya29.GlvwA6SMEkFqyBMTvNmisEdLnfYYykdfTcr3BBGyg3KZ_jkP9zzrJWvbmr9X3HQzj9SqT8APsK9-LItJbMUjISOPjzygVQenAMEMz7hASxBP4O3Lx1SB3bLcSttR');
 var userToken = ''
+var chat = ''
+var messageUid = ''
 
 passport.use(new GoogleStrategy({
     clientID: '32013397026-5am1ufgrvlvkeh9kril5tgavdbc537mj.apps.googleusercontent.com',
@@ -60,11 +63,24 @@ router.post('/gcl', function(req, res) {
 
 router.get('/redirect', function(req, res) {
   console.log("===============" + req.query.flockEvent);
+  chat = req.query.flockEvent.chat;
+  messageUid = req.query.flockEvent.messageUids.messageUid
+
   res.redirect('https://dev-ragingoctopus.herokuapp.com/');
 })
 
 router.get('/getData', function(req, res) {
-  console.log("++++++++++", userToken);
+  request.post({
+    url: "https://api.flock.co/v1/chat.fetchMessages", 
+    form: {
+      "token": userToken,
+      "chat": chat,
+      "uids": [messageUid]
+    }
+  }, function (e, r, body) {
+    console.log("++++++++" + body);
+  });
+
   res.send(200, {"data": memo})
   return
 })
