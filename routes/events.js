@@ -114,7 +114,7 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('https://dev-ragingoctopus.herokuapp.com/');
+    res.redirect('https://tranquil-wave-95184.herokuapp.com/');
   }
 );
 
