@@ -59,6 +59,7 @@ router.get('/redirect', function(req, res) {
 router.get('/getData', function(req, res) {
 
   res.send(200, {"data": memo})
+  return
 })
 
 module.exports = router;
