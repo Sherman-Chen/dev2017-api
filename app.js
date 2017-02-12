@@ -31,6 +31,7 @@ app.use('/events', events);
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', "*");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  next();
 });
 
 // catch 404 and forward to error handler
